@@ -187,14 +187,15 @@ type RichTextBoxWithSqlHighlighting() =
                 for m in mx do if (m.Success) then color(m,c)
         let SelectionAt = x.SelectionStart
         Lock.LockWindowUpdate(x.Handle.ToInt32())
-        hl "(\*)|(!)|(@)|(let)" Color.Blue // (!)|
+        hl "(\*)|(!)|(@)|(let)" Color.Blue
+        hl "([)|(])" Color.DarkBlue
+        hl "(and)|(or)|(not)" Color.DarkGreen
+        hl "(avg)|(abs)|(max)|(min)" Color.DarkRed
         hl "(select)|(where)|(from)|(top)|(order)|(group)|(by)|(as)|(null)|(insert)|(exec)|(into)" Color.Blue
         hl "(join)|(left)|(inner)|(outer)|(right)|(on)" Color.Red
-        hl "(and)|(or)|(not)" Color.DarkGreen
         hl "(case)|(when)|(then)|(else)|(end)|(if)|(begin)" Color.Teal
         hl "(cast)|(nvarchar)|(bit)|(datetime)|(int)|(table)" Color.BlueViolet
         hl "(datepart)" Color.DarkOrange
-        hl "(avg)|(abs)|(max)|(min)" Color.DarkRed
         x.SelectionStart    <- SelectionAt
         x.SelectionLength   <- 0
         x.SelectionColor    <- Color.Black
