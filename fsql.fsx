@@ -6,7 +6,10 @@
 #r "System.Data.dll"
 
 #I @"src\Design\bin\Release"
+#I @"src\FSQL\bin\Release"
+
 #r "WinForms.dll"
+#r "FSQL.dll"
 
 open System
 open System.IO
@@ -19,6 +22,7 @@ open System.Data.SqlClient
 
 open Fake.StringHelper
 
+open Fsql
 open Fsql.Design.WinForms
 
 let datasourceConf = "datasource.conf"
@@ -55,7 +59,7 @@ r1.Location <- Point(10, 80); r1.Size <- Size(770, 240);
 
 r1.Text <- if File.Exists lastQueryConf
                 then ReadFileAsString lastQueryConf
-                else "! FirstName, LastName @ Table"
+                else "! [FirstName], [LastName] @ [Table]"
 
 let r2 = new RichTextBox();
 r2.Location <- Point(10, 350); r2.Size <- Size(770, 300)
@@ -67,24 +71,8 @@ b2.Location <- Point(580, 650); b2.Size <- Size(150, 50); b2.Text <- "Go"
 let gv = new DataGridView();
 gv.Location <- Point(10, 350); gv.Size <- Size(770, 300); gv.Visible <- false
 
-let fsq () =
-    let cmd = String.Join(Environment.NewLine,
-                [for line in r1.Lines do
-                    let nsplitted = [for s in line.Split(' ','\r','\n','\t',';') do
-                                        if s <> "" && not <| String.IsNullOrEmpty(s) then
-                                            yield s]
-                    let newline = ref line
-                    if nsplitted.Length > 1 then
-                        for word in nsplitted do
-                            let repl =
-                                match word.ToLower() with
-                                | "!" -> "select"
-                                | "@" -> "from"
-                                | "let" -> "set"
-                                | _ -> ""
-                            if not <| String.IsNullOrEmpty(repl)
-                                then newline:= (!newline).Replace(word, repl)
-                    yield !newline ])
+let runQuery () =
+    let cmd = fsql r1.Lines
     try
         use conn    = new SqlConnection( r0.Text )
         use command = new SqlCommand(cmd, conn)
@@ -116,7 +104,7 @@ let fsq () =
                                 + exn.Message + Environment.NewLine
 
 b1.Click.Add(fun _ -> ignore <| form.Close())
-b2.Click.Add(fun _ -> fsq())
+b2.Click.Add(fun _ -> runQuery())
 form.Shown.Add(fun _ -> r1.ColorTheKeyWords())
 
 form.Controls.AddRange [|ddp; l2; b1; b2; r1; r2; gv|]; Application.Run(form)

@@ -90,7 +90,13 @@ type DDP() as x =
             if currIcon <> null then
                 offset <- (single currIcon.Width) + 4.0f
                 gr.DrawImage(currIcon, new Rectangle(6, _pnlHeader.Height / 2 - currIcon.Height / 2, currIcon.Width, currIcon.Height));
-            gr.DrawString("FSQL", Control.DefaultFont, b, new RectangleF(6.0f + offset, 0.0f, (single _pnlHeader.Width) - 12.0f - 6.0f - 6.0f, (single _pnlHeader.Height) - 1.0f), vCenteredFormat)
+            gr.DrawString("fsql"
+                , Control.DefaultFont, b
+                , new RectangleF(     6.0f + offset
+                                    , 0.0f
+                                    , (single _pnlHeader.Width)  - 24.0f
+                                    , (single _pnlHeader.Height) - 1.0f)
+                                    , vCenteredFormat)
         )
         
         x.SetStyle(ControlStyles.DoubleBuffer, true)
@@ -179,7 +185,7 @@ type RichTextBoxWithSqlHighlighting() =
         let SelectionAt = x.SelectionStart
         Lock.LockWindowUpdate(x.Handle.ToInt32())
         hl "(\*)|(!)|(@)|(let)" Color.Blue
-        hl "([)|(])" Color.DarkBlue
+        hl "(\()|(\))|(\[)|(\])" Color.DarkGray
         hl "(and)|(or)|(not)" Color.DarkGreen
         hl "(avg)|(abs)|(max)|(min)" Color.DarkRed
         hl "(select)|(where)|(from)|(top)|(order)|(group)|(by)|(as)|(null)|(insert)|(exec)|(into)" Color.Blue

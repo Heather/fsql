@@ -16,4 +16,9 @@ if not exist "..\src\Design\bin\Release\WinForms.dll" (
     %MSBUILD% "..\src\Design\WinForms.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
 )
 
+if not exist "..\src\FSQL\bin\Release\FSQL.dll" ( 
+	echo Building FSQL...
+    %MSBUILD% "..\src\FSQL\FSQL.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
+)
+
 start packages\FAKE\tools\Fsi.exe ..\fsql.fsx
