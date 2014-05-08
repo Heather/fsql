@@ -64,7 +64,7 @@ b1.Location <- Point(40, 650); b1.Size <- Size(150, 50); b1.Text <- "Exit"
 let b2 = new Button();
 b2.Location <- Point(580, 650); b2.Size <- Size(150, 50); b2.Text <- "Go"
 
-let gv = new DataGrid();
+let gv = new DataGridView();
 gv.Location <- Point(10, 350); gv.Size <- Size(770, 300); gv.Visible <- false
 
 let fsq () =
@@ -103,6 +103,7 @@ let fsq () =
                 gv.Visible <- true
                 
                 gv.DataSource <- dt
+                gv.AutoResizeColumns()
             else
                 command.ExecuteNonQuery() |> ignore
                 r2.Text <- r2.Text + "OK" + Environment.NewLine
