@@ -1,6 +1,9 @@
 *.exe
 *.dll
 
+*.conf
+*.fsql
+
 Thumbs.db
 ehthumbs.db
 Desktop.ini
