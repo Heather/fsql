@@ -11,14 +11,14 @@ if not exist packages\FAKE\tools\Fake.exe (
 	".nuget\NuGet.exe" "install" "FAKE" "-OutputDirectory" "packages" "-ExcludeVersion" "-Prerelease"
 )
 
-if not exist "..\src\Design\bin\Release\WinForms.dll" ( 
+if not exist "src\Design\bin\Release\WinForms.dll" ( 
 	echo Building Design WinForms...
-    %MSBUILD% "..\src\Design\WinForms.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
+    %MSBUILD% "src\Design\WinForms.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
 )
 
-if not exist "..\src\FSQL\bin\Release\FSQL.dll" ( 
+if not exist "src\FSQL\bin\Release\FSQL.dll" ( 
 	echo Building FSQL...
-    %MSBUILD% "..\src\FSQL\FSQL.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
+    %MSBUILD% "src\FSQL\FSQL.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
 )
 
-start packages\FAKE\tools\Fsi.exe ..\fsql.fsx
+start packages\FAKE\tools\Fsi.exe fsql.fsx
