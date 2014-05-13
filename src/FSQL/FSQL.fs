@@ -17,7 +17,6 @@ let fsql (lines : seq<string>) =
                         match word.ToLower() with
                         | "!" -> "select"
                         | "~" -> "from"
-                        | "let" -> "set"
                         | "var" -> "declare"
                         | _ -> ""
                     if not <| String.IsNullOrEmpty(repl)
