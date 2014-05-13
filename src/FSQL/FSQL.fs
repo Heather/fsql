@@ -16,8 +16,9 @@ let fsql (lines : seq<string>) =
                     let repl =
                         match word.ToLower() with
                         | "!" -> "select"
-                        | "@" -> "from"
+                        | "~" -> "from"
                         | "let" -> "set"
+                        | "var" -> "declare"
                         | _ -> ""
                     if not <| String.IsNullOrEmpty(repl)
                         then newline:= (!newline).Replace(word, repl)

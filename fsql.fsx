@@ -59,7 +59,7 @@ r1.Location <- Point(10, 80); r1.Size <- Size(770, 240);
 
 r1.Text <- if File.Exists lastQueryConf
                 then ReadFileAsString lastQueryConf
-                else "! [FirstName], [LastName] @ [Table]"
+                else "! [FirstName], [LastName] ~ [Table]"
 
 let r2 = new RichTextBox();
 r2.Location <- Point(10, 350); r2.Size <- Size(770, 300)
