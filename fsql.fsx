@@ -48,14 +48,14 @@ r0.Location <- Point(20, 25); r0.Size <- Size(form.Width - 50, 40);
 r0.Text <- if File.Exists datasourceConf
                 then ReadFileAsString datasourceConf
                 else @"Data Source=(LocalDb)\v11.0;Initial Catalog=db;Integrated Security=True"
-                
-let ddp = new DDP();
-ddp.Location <- Point(5, 0); ddp.Size <- Size(form.Width - 20, 70); 
 
-form.Controls.Add r0
+let ddp = new DDP();
+ddp.Location <- Point(5, 23); ddp.Size <- Size(form.Width - 20, 70); 
+
+ddp.Controls.Add r0
 
 let r1 = new RichTextBoxWithSqlHighlighting();
-r1.Location <- Point(10, 80); r1.Size <- Size(770, 240); 
+r1.Location <- Point(10, 100); r1.Size <- Size(770, 200); 
 
 r1.Text <- if File.Exists lastQueryConf
                 then ReadFileAsString lastQueryConf
@@ -70,6 +70,24 @@ b2.Location <- Point(580, 650); b2.Size <- Size(150, 50); b2.Text <- "Go"
 
 let gv = new DataGridView();
 gv.Location <- Point(10, 350); gv.Size <- Size(770, 300); gv.Visible <- false
+
+let menuStrip = new MenuStrip();
+menuStrip.Dock <- DockStyle.Top;
+
+let fileMenu = new ToolStripMenuItem();
+fileMenu.Text <- "File";
+let openM = new ToolStripMenuItem();
+openM.Text <- "Open";
+let saveM = new ToolStripMenuItem();
+saveM.Text <- "Save";
+let exitM = new ToolStripMenuItem();
+exitM.Text <- "Exit";
+
+fileMenu.DropDownItems.Add openM
+fileMenu.DropDownItems.Add saveM
+fileMenu.DropDownItems.Add exitM
+menuStrip.Items.Add fileMenu
+form.MainMenuStrip <- menuStrip
 
 let runQuery () =
     let cmd = fsql r1.Lines
@@ -103,8 +121,28 @@ let runQuery () =
                                 + "Exception:\n"
                                 + exn.Message + Environment.NewLine
 
-b1.Click.Add(fun _ -> ignore <| form.Close())
-b2.Click.Add(fun _ -> runQuery())
-form.Shown.Add(fun _ -> r1.ColorTheKeyWords())
+openM.Click.Add (fun _ -> 
+    let ofd = new OpenFileDialog()
+    let dr = ofd.ShowDialog()
+    if dr = DialogResult.OK then
+        if File.Exists ofd.FileName then
+            r1.Text <- ReadFileAsString ofd.FileName
+    )
+    
+saveM.Click.Add (fun _ -> 
+    let sfd=new SaveFileDialog()
+    sfd.FileName    <- "unknown.fsql"
+    sfd.Filter      <- "FSQL (*.fsq)|*.fsq|All files (*.*)|*.*"
+    let dr = sfd.ShowDialog()
+    if dr = DialogResult.OK then
+        WriteToFile false sfd.FileName r1.Lines
+    )
 
-form.Controls.AddRange [|ddp; l2; b1; b2; r1; r2; gv|]; Application.Run(form)
+exitM.Click.Add (fun _ -> ignore <| form.Close())
+b1.Click.Add    (fun _ -> ignore <| form.Close())
+b2.Click.Add    (fun _ -> runQuery())
+form.Shown.Add  (fun _ -> r1.ColorTheKeyWords())
+
+form.Controls.AddRange [|ddp; l2; b1; b2; r1; r2; gv|]
+form.Controls.Add menuStrip (* This one is special *)
+Application.Run(form)
