@@ -43,14 +43,14 @@ form.MinimizeBox        <- false
 let l2 = new Label();
 l2.Location <- Point(20,325); l2.Text <- "Output"
 let r0 = new RichTextBox();
-r0.Location <- Point(20, 25); r0.Size <- Size(form.Width - 50, 40); 
+r0.Location <- Point(5, 10); r0.Size <- Size(form.Width - 30, 50); 
 
 r0.Text <- if File.Exists datasourceConf
                 then ReadFileAsString datasourceConf
                 else @"Data Source=(LocalDb)\v11.0;Initial Catalog=db;Integrated Security=True"
 
-let ddp = new DDP();
-ddp.Location <- Point(5, 23); ddp.Size <- Size(form.Width - 20, 70); 
+let ddp = new Panel();
+ddp.Location <- Point(5, 23); ddp.Size <- Size(form.Width - 10, 70); 
 
 ddp.Controls.Add r0
 
