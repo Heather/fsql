@@ -29,7 +29,7 @@ type RichTextBoxWithSqlHighlighting() =
                 for m in mx do if (m.Success) then color(m,c)
         let SelectionAt = x.SelectionStart
         Lock.LockWindowUpdate(x.Handle.ToInt32())
-        hl "(\*)|(!)|(@)|(let)" Color.Blue
+        hl "(\*)|(!)|(~)|(,)|(@)|(let)" Color.Blue
         hl "(\()|(\))|(\[)|(\])" Color.DarkGray
         hl "(and)|(or)|(not)" Color.DarkGreen
         hl "(avg)|(abs)|(max)|(min)" Color.DarkRed
