@@ -4,6 +4,8 @@ open System
 open System.IO
 open System.Text
 
+let version = "0.0.1"
+
 let fsql (lines : seq<string>) = 
     String.Join(Environment.NewLine,
         [for line in lines do

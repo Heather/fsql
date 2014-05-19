@@ -76,6 +76,10 @@ menuStrip.Dock <- DockStyle.Top;
 
 let fileMenu = new ToolStripMenuItem();
 fileMenu.Text <- "File";
+
+let aboutMenu = new ToolStripMenuItem();
+aboutMenu.Text <- "About";
+
 let openM = new ToolStripMenuItem();
 openM.Text <- "Open";
 let saveM = new ToolStripMenuItem();
@@ -87,6 +91,7 @@ fileMenu.DropDownItems.Add openM
 fileMenu.DropDownItems.Add saveM
 fileMenu.DropDownItems.Add exitM
 menuStrip.Items.Add fileMenu
+menuStrip.Items.Add aboutMenu
 form.MainMenuStrip <- menuStrip
 
 let runQuery () =
@@ -121,13 +126,17 @@ let runQuery () =
                                 + "Exception:\n"
                                 + exn.Message + Environment.NewLine
 
+aboutMenu.Click.Add (fun _ -> 
+    MessageBox.Show("FSQL v." + version) |> ignore
+)
+
 openM.Click.Add (fun _ -> 
     let ofd = new OpenFileDialog()
     let dr = ofd.ShowDialog()
     if dr = DialogResult.OK then
         if File.Exists ofd.FileName then
             r1.Text <- ReadFileAsString ofd.FileName
-    )
+)
     
 saveM.Click.Add (fun _ -> 
     let sfd=new SaveFileDialog()
@@ -136,7 +145,7 @@ saveM.Click.Add (fun _ ->
     let dr = sfd.ShowDialog()
     if dr = DialogResult.OK then
         WriteToFile false sfd.FileName r1.Lines
-    )
+)
 
 exitM.Click.Add (fun _ -> ignore <| form.Close())
 b1.Click.Add    (fun _ -> ignore <| form.Close())
