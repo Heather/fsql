@@ -10,19 +10,15 @@ if not exist packages\FAKE\tools\Fake.exe (
 	echo Downloading FAKE...
 	".nuget\NuGet.exe" "install" "FAKE" "-OutputDirectory" "packages" "-ExcludeVersion" "-Prerelease"
 )
+if not exist packages\ModernUI\lib\net40\MetroFramework.dll ( 
+	echo Downloading ModernUI...
+	".nuget\NuGet.exe" "install" "ModernUI" "-OutputDirectory" "packages" "-ExcludeVersion" "-Prerelease"
+)
 
-::if rebuild
-::rm -rf "src\Design\bin"
-::if not exist "src\Design\bin\Release\WinForms.dll" ( 
-	echo Building Design WinForms...
-    %MSBUILD% "src\Design\WinForms.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
-::)
+echo Building Design WinForms...
+%MSBUILD% "src\Design\WinForms.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
 
-::if rebuild
-::rm -rf "src\FSQL\bin"
-::if not exist "src\FSQL\bin\Release\FSQL.dll" ( 
-	echo Building FSQL...
-    %MSBUILD% "src\FSQL\FSQL.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
-::)
+echo Building FSQL...
+%MSBUILD% "src\FSQL\FSQL.fsproj" /p:TargetFramework=net40 /p:Configuration=Release
 
 start packages\FAKE\tools\Fsi.exe fsql.fsx

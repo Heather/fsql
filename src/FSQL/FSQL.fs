@@ -17,6 +17,8 @@ let fsql (lines : seq<string>) =
                 for word in nsplitted do
                     let repl =
                         match word.ToLower() with
+                        | "{" -> "begin"
+                        | "}" -> "end"
                         | "!" -> "select"
                         | "~" -> "from"
                         | "var" -> "declare"
